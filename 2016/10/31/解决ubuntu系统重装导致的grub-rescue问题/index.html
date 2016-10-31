@@ -101,7 +101,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2016-10-31</span>
-            <span class="time">22:31:20</span>
+            <span class="time">22:34:23</span>
           </span>
           
         </div>
@@ -160,7 +160,7 @@
 <p>分区显示为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Disk /dev/sda: 111.8 GiB, 120034123776 bytes, 234441648 sectors</div><div class="line">Units: sectors of 1 * 512 = 512 bytes</div><div class="line">Sector size (logical/physical): 512 bytes / 512 bytes</div><div class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</div><div class="line">Disklabel type: dos</div><div class="line">Disk identifier: 0x51c83467</div><div class="line"></div><div class="line">设备       启动     Start    末尾    扇区   Size Id 类型</div><div class="line">/dev/sda1            2048    393215    391168   191M 83 Linux</div><div class="line">/dev/sda2          395262 234440703 234045442 111.6G  5 扩展</div><div class="line">/dev/sda5          395264  21878783  21483520  10.3G 82 Linux 交换 / Solaris</div><div class="line">/dev/sda6        21880832  33189887  11309056   5.4G 83 Linux</div><div class="line">/dev/sda7        33191936  91795455  58603520    28G 83 Linux</div><div class="line">/dev/sda8        91797504 232476671 140679168  67.1G 83 Linux</div><div class="line">/dev/sda9  *    232478720 234440703   1961984   958M ef EFI (FAT-12/16/32)</div></pre></td></tr></table></figure>
 <p>注意我这里是将整个根目录/安装在/dev/sda1上面的。因此可执行操作如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1.	sudo apt-get remove grub-efi-amd64   #移除grub-efi</div><div class="line">2.	sudo apt-get install grub-pc  #安装普通grub</div><div class="line">3.	sudo mount /dev/sda1 /mnt    </div><div class="line">4.	sudo mount /dev/sda9 /mnt/boot #挂载引导分区</div><div class="line">5.	sudo grub-install --root-directory=/mnt /dev/sda</div><div class="line">6.	sudo update-grub</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo apt-get remove grub-efi-amd64   #移除grub-efi</div><div class="line">sudo apt-get install grub-pc  #安装普通grub</div><div class="line">sudo mount /dev/sda1 /mnt    </div><div class="line">sudo mount /dev/sda9 /mnt/boot #挂载引导分区</div><div class="line">sudo grub-install --root-directory=/mnt /dev/sda</div><div class="line">sudo update-grub</div></pre></td></tr></table></figure>
 </li>
 <li><p>重启测试grub的启动菜单是否恢复。</p>
 <h1 id="关于Grub2"><a href="#关于Grub2" class="headerlink" title="关于Grub2"></a>关于Grub2</h1><p>Grub2有2种运行模式：</p>
