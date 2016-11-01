@@ -101,7 +101,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2016-11-01</span>
-            <span class="time">19:52:00</span>
+            <span class="time">19:54:50</span>
           </span>
           
           <!--  Categories  -->
@@ -145,9 +145,8 @@
 <h2 id="3-1层次融合算法（Hierarchical-Group-Algorithm）"><a href="#3-1层次融合算法（Hierarchical-Group-Algorithm）" class="headerlink" title="3.1层次融合算法（Hierarchical Group Algorithm）"></a>3.1层次融合算法（Hierarchical Group Algorithm）</h2><p>这里是基于区域的合并，区域包含的信息比像素丰富，更能够有效地代表物体的特征。</p>
 <p>​                    <img src="http://ww4.sinaimg.cn/large/9c9fe229jw1f9cujksfchj20ck0avgoh.jpg" alt=""></p>
 <p>​          <strong>输入：</strong>彩色图片（三通道）</p>
-<pre><code>**输出：**目标位置的可能结果L
-
-1. 使用**Efficient Graph-Based Image Segmentation**的方法获取原始分割区域R={r1,r2,…,rn}；
+<p>​          <strong>输出：</strong>目标位置的可能结果L</p>
+<pre><code>1. 使用**Efficient Graph-Based Image Segmentation**的方法获取原始分割区域R={r1,r2,…,rn}；
 2. 初始化相似度集合S=∅；
 3. 计算两两**相邻区域**之间的相似度（见3.2），将其添加到相似度集合S中；
 4. 从相似度集合S中找出，**相似度最大**的两个区域 ri 和rj，将其合并成为一个区域 rt，从相似度集合中除去原先与ri和rj相邻区域之间计算的相似度，计算rt与其相邻区域（原先与ri或rj相邻的区域）的相似度，将其结果添加的到相似度集合S中。同时将新区域 rt 添加到 区域集合R中；
