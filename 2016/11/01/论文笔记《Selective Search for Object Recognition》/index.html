@@ -101,7 +101,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2016-11-01</span>
-            <span class="time">19:44:49</span>
+            <span class="time">19:49:10</span>
           </span>
           
           <!--  Categories  -->
@@ -140,11 +140,11 @@
 <h2 id="2-2-分割（Segmentation）"><a href="#2-2-分割（Segmentation）" class="headerlink" title="2.2 分割（Segmentation）"></a>2.2 分割（Segmentation）</h2><p>分割体现了图像的层次结构，Selective Search本身结合了穷举搜索和分割的优点，利用图像结构来指导采样过程。利用分割产生初始的与类别无关的一系列目标位置，通过多样化策略使用自底向上的融合过程产生最终的目标位置。</p>
 <h1 id="三、选择性搜索（Selective-Search）"><a href="#三、选择性搜索（Selective-Search）" class="headerlink" title="三、选择性搜索（Selective Search）"></a>三、选择性搜索（Selective Search）</h1><p>设计条件：</p>
 <p>（1）多尺度。Figure2可以体现多尺度的必要性，利用层次融合算法（Hierarchical Group Algorithm）实现多尺度；</p>
-<p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\figure2.png" alt="figure1"></p>
+<p>​                                                      <img src="http://ww1.sinaimg.cn/large/9c9fe229jw1f9cuit1j3tj20pk0akagl.jpg" alt=""></p>
 <p>（2）多样化。目标的多样性和复杂性要求采用多样化策略来融合区域，多样化策略考虑了目标的颜色、纹理、大小等多种特征；</p>
 <p>（3）速度快。算法的提出是为了应用于实际的目标检测框架中，所以对速度有一定的要求。</p>
 <h2 id="3-1层次融合算法（Hierarchical-Group-Algorithm）"><a href="#3-1层次融合算法（Hierarchical-Group-Algorithm）" class="headerlink" title="3.1层次融合算法（Hierarchical Group Algorithm）"></a>3.1层次融合算法（Hierarchical Group Algorithm）</h2><p>这里是基于区域的合并，区域包含的信息比像素丰富，更能够有效地代表物体的特征。</p>
-<p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\algo1.png" alt="figure1"></p>
+<p>​                <img src="http://ww4.sinaimg.cn/large/9c9fe229jw1f9cujksfchj20ck0avgoh.jpg" alt=""></p>
 <p>​          <strong>输入：</strong>彩色图片（三通道）</p>
 <pre><code>**输出：**目标位置的可能结果L
 
@@ -169,12 +169,15 @@
 <p><img src="http://img.blog.csdn.net/20140916174125106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
 <p>（4）吻合（fit）相似度</p>
 <pre><code>这里主要是为了衡量两个区域是否更加“吻合”，其指标是合并后的区域的Bounding Box（能够框住区域的最小矩形（没有旋转））越小，其吻合度越高。其计算方式：
-</code></pre><p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\f1.png" alt="img"></p>
-<pre><code>最后将上述相似性度量方式组合到一起，可以写成如下，其中![img](http://img.blog.csdn.net/20140916174911515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)：
-</code></pre><p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\f2.png" alt="img"></p>
-<h3 id="初始区域不同"><a href="#初始区域不同" class="headerlink" title="初始区域不同"></a>初始区域不同</h3><p>​    使用<strong>Efficient Graph-Based Image Segmentation</strong>的方法获取原始分割区域，这是当时作者论文发表时最快最有效的算法，不同的初始区域通过不同的颜色空间获得，同时改变上述分割方法的阈值k。</p>
+
+                      ![](http://ww2.sinaimg.cn/large/9c9fe229jw1f9cuku79raj207e0130so.jpg)
+
+最后将上述相似性度量方式组合到一起，可以写成如下，其中![img](http://img.blog.csdn.net/20140916174911515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)：
+
+                  ![](http://ww3.sinaimg.cn/large/9c9fe229jw1f9culb8hzvj209a01hmx9.jpg)
+</code></pre><h3 id="初始区域不同"><a href="#初始区域不同" class="headerlink" title="初始区域不同"></a>初始区域不同</h3><p>​    使用<strong>Efficient Graph-Based Image Segmentation</strong>的方法获取原始分割区域，这是当时作者论文发表时最快最有效的算法，不同的初始区域通过不同的颜色空间获得，同时改变上述分割方法的阈值k。</p>
 <h1 id="四、使用选择性搜索进行目标识别"><a href="#四、使用选择性搜索进行目标识别" class="headerlink" title="四、使用选择性搜索进行目标识别"></a>四、使用选择性搜索进行目标识别</h1><p>​    通过上述的区域合并，可以得到一些目标的位置假设L。接下来的任务就是如何从中找出目标的真正位置并确定目标的类别。 常用的目标识别特征有HOG（Histograms of oriented gradients）和 BOW(bag-of-words) 两种特征。在穷举搜索方法中，寻找合适的位置假设需要花费大量的时间，因此选择的特征不能太复杂，一般只能使用HOG特征。由于选择性搜索在获得目标位置假设这一步效率较高，因此可以采用诸如SIFT等运算量大，表示能力强的特征，作者使用了BOW特征。在分类过程中，采用了SVM。</p>
-<p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\figure3.png" alt="img"></p>
+<p><img src="http://ww4.sinaimg.cn/large/9c9fe229jw1f9cukdg0zgj20ud08rwin.jpg" alt=""></p>
 <p><strong>特征提取</strong></p>
 <p> 系统在实现过程中，使用color-SIFT特征以及spatial pyramid divsion方法。在单一尺度σ=1.2下抽样提取特征。使用SIFT、Extended OpponentSIFT、RGB-SIFT特征，在四层金字塔模型 1×1、2×2、3×3、4×4提取特征并组合，可以得到360,000维的特征向量。</p>
 <p> <strong>训练过程</strong></p>
