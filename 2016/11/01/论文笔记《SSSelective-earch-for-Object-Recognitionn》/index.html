@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Yajing Guo">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="论文笔记《SSSelective earch for Object Recognitionn》"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Yajing Guo&#39;s Blog"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://yoursite.comundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Yajing Guo&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Yajing Guo's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">论文笔记《SSSelective earch for Object Recognitionn》</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/tgyab">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:649960532@qq.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Yajing Guo</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2016-11-01</span>
+            <span class="time">17:09:28</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/论文笔记/">论文笔记</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/object-detection-region-proposal/">#object detection,region proposal</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>论文下载：<a href="https://ivi.fnwi.uva.nl/isis/publications/2013/UijlingsIJCV2013/UijlingsIJCV2013.pdf" target="_blank" rel="external">https://ivi.fnwi.uva.nl/isis/publications/2013/UijlingsIJCV2013/UijlingsIJCV2013.pdf</a></p>
+<p>代码网址：<a href="http://koen.me/research/selectivesearch/" target="_blank" rel="external">http://koen.me/research/selectivesearch/</a></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>  这是我阅读的计算机视觉领域的第一篇论文，是它开启了我对目标检测的研究与探索。通过博客把自己对于论文的理解记录下来，加深自己的理解的同时分享给大家。</p>
+<p>   这篇论文是J.R.R. Uijlings发表在2013 IJCV上的一篇文章，谷歌学术引用次数高达771次，是目标检测领域一篇经典文章。文章主要利用了选择性搜索（SelectiveSearch）的方法来进行目标识别（Object Recognition），即在图像中找到确定的目标，并找出其具体位置。之前目标识别的做法主要是基于穷举搜索（Exhaustive Search），选择一个滑动窗口（sliding window）扫描整张图像，改变窗口的大小，继续扫描整张图像。但这种做法计算量大很耗时。作者突破思维定式，从另一个角度给出一种简单而又有效的方法。</p>
+<h1 id="一、介绍（Introduction）"><a href="#一、介绍（Introduction）" class="headerlink" title="一、介绍（Introduction）"></a>一、介绍（Introduction）</h1><p>​    由于目标具有复杂性，即目标有不同的形状、尺寸、颜色和纹理等，所以目标识别需要采用多样化策略。如图Figure1所示，</p>
+<p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\figure1.png" alt="figure1"></p>
+<p>（a）说明了图像本质上是分层的，勺子和沙拉在碗中，而碗又在桌子上；</p>
+<p>（b）猫可以从颜色上区分，却不能从纹理上区分；</p>
+<p>（c）柠檬可以从纹理上与周围叶子区分，却不能从颜色上区分；</p>
+<p>（d）车轮虽然从纹理以及颜色上与车身不同，但是却是车的一部分。</p>
+<h1 id="二、相关工作"><a href="#二、相关工作" class="headerlink" title="二、相关工作"></a>二、相关工作</h1><h2 id="2-1-穷举搜索（Exhaustive-Search）"><a href="#2-1-穷举搜索（Exhaustive-Search）" class="headerlink" title="2.1 穷举搜索（Exhaustive Search）"></a>2.1 穷举搜索（Exhaustive Search）</h2><p>穷举搜索本身具有几个缺点：</p>
+<p>（1）搜索每个可能的位置在计算上不可实现，因此需要通过固定滑动窗的尺寸以及宽长比来缩小搜索空间；</p>
+<p>（2）分类器是简单的，外观模型需要加速；</p>
+<p>（3）单一采样策略产生的许多边框（boxes）对于目标本身并没有用。</p>
+<h2 id="2-2-分割（Segmentation）"><a href="#2-2-分割（Segmentation）" class="headerlink" title="2.2 分割（Segmentation）"></a>2.2 分割（Segmentation）</h2><p>分割体现了图像的层次结构，Selective Search本身结合了穷举搜索和分割的优点，利用图像结构来指导采样过程。利用分割产生初始的与类别无关的一系列目标位置，通过多样化策略使用自底向上的融合过程产生最终的目标位置。</p>
+<h1 id="三、选择性搜索（Selective-Search）"><a href="#三、选择性搜索（Selective-Search）" class="headerlink" title="三、选择性搜索（Selective Search）"></a>三、选择性搜索（Selective Search）</h1><p>设计条件：</p>
+<p>（1）多尺度。Figure2可以体现多尺度的必要性，利用层次融合算法（Hierarchical Group Algorithm）实现多尺度；</p>
+<p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\figure2.png" alt="figure1"></p>
+<p>（2）多样化。目标的多样性和复杂性要求采用多样化策略来融合区域，多样化策略考虑了目标的颜色、纹理、大小等多种特征；</p>
+<p>（3）速度快。算法的提出是为了应用于实际的目标检测框架中，所以对速度有一定的要求。</p>
+<h2 id="3-1层次融合算法（Hierarchical-Group-Algorithm）"><a href="#3-1层次融合算法（Hierarchical-Group-Algorithm）" class="headerlink" title="3.1层次融合算法（Hierarchical Group Algorithm）"></a>3.1层次融合算法（Hierarchical Group Algorithm）</h2><p>这里是基于区域的合并，区域包含的信息比像素丰富，更能够有效地代表物体的特征。</p>
+<p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\algo1.png" alt="figure1"></p>
+<p>​          <strong>输入：</strong>彩色图片（三通道）</p>
+<pre><code>**输出：**目标位置的可能结果L
+
+1. 使用**Efficient Graph-Based Image Segmentation**的方法获取原始分割区域R={r1,r2,…,rn}；
+2. 初始化相似度集合S=∅；
+3. 计算两两**相邻区域**之间的相似度（见3.2），将其添加到相似度集合S中；
+4. 从相似度集合S中找出，**相似度最大**的两个区域 ri 和rj，将其合并成为一个区域 rt，从相似度集合中除去原先与ri和rj相邻区域之间计算的相似度，计算rt与其相邻区域（原先与ri或rj相邻的区域）的相似度，将其结果添加的到相似度集合S中。同时将新区域 rt 添加到 区域集合R中；
+5. 获取每个区域的Bounding Boxes，这个结果就是物体位置的可能结果L。
+</code></pre><h2 id="3-2多样化策略（-Diversification-Strategies）"><a href="#3-2多样化策略（-Diversification-Strategies）" class="headerlink" title="3.2多样化策略（ Diversification Strategies）"></a>3.2多样化策略（ Diversification Strategies）</h2><p>作者从三个方面给出了多样化策略：颜色空间不同，相似性度量方法不同，初始区域不同。</p>
+<h3 id="颜色空间不同"><a href="#颜色空间不同" class="headerlink" title="颜色空间不同"></a>颜色空间不同</h3><p>​    作者采用了8种不同的颜色空间，主要是为了考虑场景以及光照条件等。主要使用的颜色空间有：（1）RGB，（2）灰度I，（3）Lab，（4）rgI（归一化的rg通道加上灰度），（5）HSV，（6）rgb（归一化的RGB），（7）C，（8）H（HSV的H通道）</p>
+<h3 id="相似性度量方法不同"><a href="#相似性度量方法不同" class="headerlink" title="相似性度量方法不同"></a>相似性度量方法不同</h3><p>论文介绍了四种相似性度量方法，包括颜色相似度，纹理相似度，大小相似度和吻合相似度。</p>
+<p>（1）颜色（colour）相似度</p>
+<p>​    获取图像每个颜色通道的25 bins的直方图，并使用L1范数归一化，这样每个区域都可以得到一个75维的向量<img src="http://img.blog.csdn.net/20140916172045000?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img">，区域之间颜色相似度通过下面的公式计算：</p>
+<p><img src="http://img.blog.csdn.net/20140916172416893?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<pre><code>在区域合并过程中使用需要对新的区域进行计算其直方图，计算方法：
+</code></pre><p><img src="http://img.blog.csdn.net/20140916172511687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>（2）纹理（texture）相似度</p>
+<p>​    纹理采用快速SIFT-Like特征。具体做法是对每个颜色通道的8个不同方向计算方差σ=1的高斯微分（Gaussian Derivative），每个通道每个颜色获取10 bins的直方图（L1范数归一化），这样就可以获取到一个240维的向量，区域之间纹理相似度计算方式和颜色相似度计算方式类似，合并之后新区域的纹理特征计算方式和颜色特征计算相同：</p>
+<p><img src="http://img.blog.csdn.net/20140916173649968?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>（3）大小(size）相似度</p>
+<p>​    这里的大小是指区域中包含像素点的个数。使用大小的相似度计算，主要是为了尽量让小的区域先合并：</p>
+<p><img src="http://img.blog.csdn.net/20140916174125106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<p>（4）吻合（fit）相似度</p>
+<pre><code>这里主要是为了衡量两个区域是否更加“吻合”，其指标是合并后的区域的Bounding Box（能够框住区域的最小矩形（没有旋转））越小，其吻合度越高。其计算方式：
+</code></pre><p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\f1.png" alt="img"></p>
+<pre><code>最后将上述相似性度量方式组合到一起，可以写成如下，其中![img](http://img.blog.csdn.net/20140916174911515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)：
+</code></pre><p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\f2.png" alt="img"></p>
+<h3 id="初始区域不同"><a href="#初始区域不同" class="headerlink" title="初始区域不同"></a>初始区域不同</h3><p>​    使用<strong>Efficient Graph-Based Image Segmentation</strong>的方法获取原始分割区域，这是当时作者论文发表时最快最有效的算法，不同的初始区域通过不同的颜色空间获得，同时改变上述分割方法的阈值k。</p>
+<h1 id="四、使用选择性搜索进行目标识别"><a href="#四、使用选择性搜索进行目标识别" class="headerlink" title="四、使用选择性搜索进行目标识别"></a>四、使用选择性搜索进行目标识别</h1><p>​    通过上述的区域合并，可以得到一些目标的位置假设L。接下来的任务就是如何从中找出目标的真正位置并确定目标的类别。 常用的目标识别特征有HOG（Histograms of oriented gradients）和 BOW(bag-of-words) 两种特征。在穷举搜索方法中，寻找合适的位置假设需要花费大量的时间，因此选择的特征不能太复杂，一般只能使用HOG特征。由于选择性搜索在获得目标位置假设这一步效率较高，因此可以采用诸如SIFT等运算量大，表示能力强的特征，作者使用了BOW特征。在分类过程中，采用了SVM。</p>
+<p><img src="C:\Users\gyj\Desktop\blog\source\_posts\\img\figure3.png" alt="img"></p>
+<p><strong>特征提取</strong></p>
+<p> 系统在实现过程中，使用color-SIFT特征以及spatial pyramid divsion方法。在单一尺度σ=1.2下抽样提取特征。使用SIFT、Extended OpponentSIFT、RGB-SIFT特征，在四层金字塔模型 1×1、2×2、3×3、4×4提取特征并组合，可以得到360,000维的特征向量。</p>
+<p> <strong>训练过程</strong></p>
+<pre><code>训练方法采用SVM。首先选择ground truth的目标窗口作为**正样本**（positive examples），与正样本窗口重叠20%~50%的窗口作为**负样本**（negative examples）。在选择样本的过程中剔除彼此重叠70%的负样本，这样可以提供一个较好的初始化结果。在重复迭代过程中加入hard negative examples（得分很高的负样本），由于训练模型初始化结果较好，模型只需要迭代两次就可以了。
+</code></pre><h1 id="五、评价（Evaluation）"><a href="#五、评价（Evaluation）" class="headerlink" title="五、评价（Evaluation）"></a>五、评价（Evaluation）</h1><p>实验评价了四个部分：多样化策略，定位质量，目标识别表现，定位质量的上限。</p>
+<p>一般地，通过算法得到的包含物体的Bounding Boxes与ground truth重叠越多，那么算法性能就越好。论文使用的指标是平均最高重叠率ABO（Average Best Overlap）。对于特定类别 c，每个ground truth表示为 <img src="http://img.blog.csdn.net/20140917100834261?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img">，对于计算得到的位置假设L中的每个值l， ABO的公式表达为：</p>
+<p><img src="http://img.blog.csdn.net/20140917101104286?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<pre><code>重叠率的计算方式：
+</code></pre><p><img src="http://img.blog.csdn.net/20140917101151929?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc3VyZ2V3b25n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="img"></p>
+<pre><code>上面结果给出的是一个类别的ABO，对于所有类别下的性能评价，使用所有类别的ABO的平均值MABO（Mean Average Best Overlap）来评价。
+</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
