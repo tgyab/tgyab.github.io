@@ -101,7 +101,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2016-11-01</span>
-            <span class="time">19:54:50</span>
+            <span class="time">19:57:24</span>
           </span>
           
           <!--  Categories  -->
@@ -125,9 +125,9 @@
         <div class="post-content">
           <p>论文下载：<a href="https://ivi.fnwi.uva.nl/isis/publications/2013/UijlingsIJCV2013/UijlingsIJCV2013.pdf" target="_blank" rel="external">https://ivi.fnwi.uva.nl/isis/publications/2013/UijlingsIJCV2013/UijlingsIJCV2013.pdf</a></p>
 <p>代码网址：<a href="http://koen.me/research/selectivesearch/" target="_blank" rel="external">http://koen.me/research/selectivesearch/</a></p>
-<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>这是我阅读的计算机视觉领域的第一篇论文，是它开启了我对目标检测的研究与探索。通过博客把自己对于论文的理解记录下来，加深自己的理解的同时分享给大家。</p>
-<p>这篇论文是J.R.R. Uijlings发表在2013 IJCV上的一篇文章，谷歌学术引用次数高达771次，是目标检测领域一篇经典文章。文章主要利用了选择性搜索（SelectiveSearch）的方法来进行目标识别（Object Recognition），即在图像中找到确定的目标，并找出其具体位置。之前目标识别的做法主要是基于穷举搜索（Exhaustive Search），选择一个滑动窗口（sliding window）扫描整张图像，改变窗口的大小，继续扫描整张图像。但这种做法计算量大很耗时。作者突破思维定式，从另一个角度给出一种简单而又有效的方法。</p>
-<h1 id="一、介绍（Introduction）"><a href="#一、介绍（Introduction）" class="headerlink" title="一、介绍（Introduction）"></a>一、介绍（Introduction）</h1><p>​    由于目标具有复杂性，即目标有不同的形状、尺寸、颜色和纹理等，所以目标识别需要采用多样化策略。如图Figure1所示，</p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>　　这是我阅读的计算机视觉领域的第一篇论文，是它开启了我对目标检测的研究与探索。通过博客把自己对于论文的理解记录下来，加深自己的理解的同时分享给大家。</p>
+<p>　　这篇论文是J.R.R. Uijlings发表在2013 IJCV上的一篇文章，谷歌学术引用次数高达771次，是目标检测领域一篇经典文章。文章主要利用了选择性搜索（SelectiveSearch）的方法来进行目标识别（Object Recognition），即在图像中找到确定的目标，并找出其具体位置。之前目标识别的做法主要是基于穷举搜索（Exhaustive Search），选择一个滑动窗口（sliding window）扫描整张图像，改变窗口的大小，继续扫描整张图像。但这种做法计算量大很耗时。作者突破思维定式，从另一个角度给出一种简单而又有效的方法。</p>
+<h1 id="一、介绍（Introduction）"><a href="#一、介绍（Introduction）" class="headerlink" title="一、介绍（Introduction）"></a>一、介绍（Introduction）</h1><p>​　　由于目标具有复杂性，即目标有不同的形状、尺寸、颜色和纹理等，所以目标识别需要采用多样化策略。如图Figure1所示，</p>
 <p>​            <img src="http://ww2.sinaimg.cn/large/9c9fe229jw1f9cugcfs9dj20cp0epdgy.jpg" alt=""></p>
 <p>（a）说明了图像本质上是分层的，勺子和沙拉在碗中，而碗又在桌子上；</p>
 <p>（b）猫可以从颜色上区分，却不能从纹理上区分；</p>
