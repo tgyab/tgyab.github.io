@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Yajing Guo">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="论文笔记《Rich feature hierarchies for accurate object detection and semantic segmentation》"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Yajing Guo&#39;s Blog"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://yoursite.comundefined"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Yajing Guo&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Yajing Guo's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-light.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">论文笔记《Rich feature hierarchies for accurate object detection and semantic segmentation》</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/tgyab">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:649960532@qq.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Yajing Guo</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2016-11-02</span>
+            <span class="time">17:27:43</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/论文笔记/">论文笔记</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/region-proposal，-convolutional-neural-networks（cnn）/">#region proposal， convolutional neural networks（cnn）</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>这是Ross Girshick提出的R-CNN方法，将CNN与region proposal方法结合起来用于目标检测，是目标检测领域的一大创新，之后产生了一系列RCNN的方法，都是对本文的改进。</p>
+<a id="more"></a>
+<p>论文下载：<a href="https://arxiv.org/pdf/1311.2524v5.pdf" target="_blank" rel="external">https://arxiv.org/pdf/1311.2524v5.pdf</a></p>
+<p>代码网址：<a href="https://github.com/rbgirshick/rcnn" target="_blank" rel="external">https://github.com/rbgirshick/rcnn</a></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>　　在正式开始写笔记之前，先膜拜一下大神Ross B. Girshick，他不仅学术牛，工程也牛，代码健壮，文档详细，clone下来就能跑。当前一般将目标检测的方法分为传统方法和基于深度学习的方法，在传统方法中DPM模型一直保有其核心地位，RBG大神在读博期间因为DPM模型获得了Pascal VOC的终身成就奖。2012年AlexNet赢得了Imagenet挑战赛的冠军，其性能远远优于传统方法，深度学习再一次成为热点，而Convolutional Neural Network（CNN）开始流行。由于CNN网络在分类问题上效果很好，RBG大神把检测（detection）问题转化为分类问题，提出了R-CNN方法。这篇论文发表在2014CVPR上，谷歌学术引用多达1961次。</p>
+<h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><p>　　CNN由LeCun 于20年前提出来，它通过反向传播的随机梯度下降法来训练网络，但是随着SVM方法成为主流，CNN沉寂了近20年，直到2012年重新成为热点。深度学习能够重新发展的原因主要包括：1.庞大的训练数据（120万张训练数据），2. GPU并行运算增强计算能力，3. 其他理论的突破，如ReLU非线性函数和Dropout的出现等。</p>
+<p>　　本文的两个关键点：</p>
+<p>（1）为了定位和分割目标，将CNN应用到自底向上的region proposals中，本文采用了Selective Search，关于Selective Search参见上一篇博客；</p>
+<p>（2）由于带标签的训练数据缺乏，所以本文所用的网络使用了微调（fine-tuning），即利用在Imagenet数据集上训练好的AlexNet网络，使用Pascal VOC2007的训练集进行微调。事实证明这种方法是有效的，通过微调，检测的mAP提高了8%。</p>
+<h1 id="二、用CNN进行目标检测"><a href="#二、用CNN进行目标检测" class="headerlink" title="二、用CNN进行目标检测"></a>二、用CNN进行目标检测</h1><p>　　目标检测的整体框架如Figure1所示，</p>
+<p>　　<img src="http://ww2.sinaimg.cn/large/9c9fe229jw1f9dtzsjj0fj20fz0dkq5t.jpg" alt=""></p>
+<p>　　主要步骤包括：</p>
+<p>（1）用selective search方法提取出2k个region proposal，并将每个region proposal映射（wrap）成227*227的大小；</p>
+<p>（2）用CNN从每一个region proposal提取固定长度的（4096维）特征向量；其中CNN网络采用AlexNet去掉最后的softmax层</p>
+<p>（3）利用CNN提取的特征向量训练K个SVM分类器；</p>
+<p>（4）测试时，利用非最大化抑制（NMS）丢弃一部分region，得到最终检测结果。</p>
+<p><strong>训练细节：</strong></p>
+<ul>
+<li>Supervised pre-training：先用Imagenet的120w的分类数据集（不包括bounding box标签）训练一个模型；</li>
+<li>Domain-specific fine-tuning：将上面训练出来的模型用于新任务(检测)和新区域(warped region proposals)上，作者将最后一个softmax从1000路输出替换成了N+1路输出（N个类别+1背景）。然后将IoU大于50%的region当成正样本，否则是负样本。将fine-tuning学习率设置成pre-train模型中的1/10（目的是为了既能学到新东西但又不会完全否定旧东西）。batch为128，其中正负样本比例是1:3。</li>
+<li>Object category classifiters：对每一类训练一个二分类SVM，在选择样本的时候，区分正负样本的IoU取多少很重要，本文利用grid search（应该算是穷举逼近的一种）交叉验证{0,0.1，…，0.5}，最终选取IoU=0.3（当IoU小于0.3时定义为负样本）。取IoU=0.5时候，mAP下降5%，取IoU=0，mAP下降4%。</li>
+</ul>
+<h1 id="三、可视化、切除（ablation）和错误分析"><a href="#三、可视化、切除（ablation）和错误分析" class="headerlink" title="三、可视化、切除（ablation）和错误分析"></a>三、可视化、切除（ablation）和错误分析</h1><h2 id="3-1-可视化特征"><a href="#3-1-可视化特征" class="headerlink" title="3.1 可视化特征"></a>3.1 可视化特征</h2><p>　　核心思想是在pool5中一个神经元对应回去原图的227<em>227中的195</em>195个像素(术语是pool5神经元的感受野是195*195)。可视化的方法是将10M的region在训练好的网络中前向传播，然后看某个pool5中特定的神经元的激活程度并且给一个排序。出来的高分的图片如下图：<br><a href="http://i.imgur.com/9WYwSB3.png" target="_blank" rel="external"><img src="http://i.imgur.com/9WYwSB3.png" alt="img"></a></p>
+<h2 id="3-2-切除（ablation）实验"><a href="#3-2-切除（ablation）实验" class="headerlink" title="3.2 切除（ablation）实验"></a>3.2 切除（ablation）实验</h2><p><a href="http://i.imgur.com/KlFMvjT.png" target="_blank" rel="external"><img src="http://i.imgur.com/KlFMvjT.png" alt="img"></a></p>
+<ul>
+<li>Performance layer-by-layer, without fine tuning，这里想说明的是，用pool5，fc6，fc7的特征做SVM分类，出来的效果都差不多。作者得到的结论是：CNN的特征表达能力大部分是在卷积层。</li>
+<li>Performance layer-by-layer, with fine tuning，这里想说明的是，pool5经过finetuning之后，mAP的提高不明显，所以卷积层提取出来的特征是具有普遍性的，而fc7经过finetuning后得到很大的提升，说明finetuning的效果主要是在全连接层上。</li>
+<li>Comparision to recent feature learning methods,这里主要说明CNN的特征学习能力比其他方法要好。</li>
+</ul>
+<h2 id="3-3-错误分析"><a href="#3-3-错误分析" class="headerlink" title="3.3 错误分析"></a>3.3 错误分析</h2><p>　　用了一个工具来分析错误</p>
+<h2 id="3-4-边框回归（Bounding-box-regression）"><a href="#3-4-边框回归（Bounding-box-regression）" class="headerlink" title="3.4 边框回归（Bounding box regression）"></a>3.4 边框回归（Bounding box regression）</h2><p>　　作者最后还是用regression的方法来进一步定位物体，这样使得mAP提高了4个点。</p>
+<h1 id="四、R-CNN缺点"><a href="#四、R-CNN缺点" class="headerlink" title="四、R-CNN缺点"></a>四、R-CNN缺点</h1><p>（1）测试阶段速度很慢：对每一个区域提取都需要计算一次前向传播；</p>
+<p>（2）SVM和回归器是事后的：CNN特征不更新响应SVM和回归器；</p>
+<p>（3）复杂的多阶段训练过程。</p>
+<p>　　因此，之后的Fast-RCNN以及Faster-RCNN方法对此做了改进。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
