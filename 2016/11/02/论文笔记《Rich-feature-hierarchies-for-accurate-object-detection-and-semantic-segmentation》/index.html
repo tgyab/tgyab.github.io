@@ -101,7 +101,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2016-11-02</span>
-            <span class="time">17:27:43</span>
+            <span class="time">17:35:20</span>
           </span>
           
           <!--  Categories  -->
@@ -116,25 +116,25 @@
           <div class="post-tags text-muted">
             Tags: 
 
-<a class="tag" href="/tags/region-proposal，-convolutional-neural-networks（cnn）/">#region proposal， convolutional neural networks（cnn）</a>
+<a class="tag" href="/tags/region-proposal，-CNN/">#region proposal， CNN</a>
 
 
           </div>
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <p>这是Ross Girshick提出的R-CNN方法，将CNN与region proposal方法结合起来用于目标检测，是目标检测领域的一大创新，之后产生了一系列RCNN的方法，都是对本文的改进。</p>
+          <p>　　这是Ross Girshick提出的R-CNN方法，将CNN与region proposal方法结合起来用于目标检测，是目标检测领域的一大创新，之后产生了一系列RCNN的方法，都是对本文的改进。</p>
 <a id="more"></a>
 <p>论文下载：<a href="https://arxiv.org/pdf/1311.2524v5.pdf" target="_blank" rel="external">https://arxiv.org/pdf/1311.2524v5.pdf</a></p>
 <p>代码网址：<a href="https://github.com/rbgirshick/rcnn" target="_blank" rel="external">https://github.com/rbgirshick/rcnn</a></p>
 <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>　　在正式开始写笔记之前，先膜拜一下大神Ross B. Girshick，他不仅学术牛，工程也牛，代码健壮，文档详细，clone下来就能跑。当前一般将目标检测的方法分为传统方法和基于深度学习的方法，在传统方法中DPM模型一直保有其核心地位，RBG大神在读博期间因为DPM模型获得了Pascal VOC的终身成就奖。2012年AlexNet赢得了Imagenet挑战赛的冠军，其性能远远优于传统方法，深度学习再一次成为热点，而Convolutional Neural Network（CNN）开始流行。由于CNN网络在分类问题上效果很好，RBG大神把检测（detection）问题转化为分类问题，提出了R-CNN方法。这篇论文发表在2014CVPR上，谷歌学术引用多达1961次。</p>
 <h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><p>　　CNN由LeCun 于20年前提出来，它通过反向传播的随机梯度下降法来训练网络，但是随着SVM方法成为主流，CNN沉寂了近20年，直到2012年重新成为热点。深度学习能够重新发展的原因主要包括：1.庞大的训练数据（120万张训练数据），2. GPU并行运算增强计算能力，3. 其他理论的突破，如ReLU非线性函数和Dropout的出现等。</p>
-<p>　　本文的两个关键点：</p>
+<p>　　本文的两个<strong>关键点：</strong></p>
 <p>（1）为了定位和分割目标，将CNN应用到自底向上的region proposals中，本文采用了Selective Search，关于Selective Search参见上一篇博客；</p>
 <p>（2）由于带标签的训练数据缺乏，所以本文所用的网络使用了微调（fine-tuning），即利用在Imagenet数据集上训练好的AlexNet网络，使用Pascal VOC2007的训练集进行微调。事实证明这种方法是有效的，通过微调，检测的mAP提高了8%。</p>
 <h1 id="二、用CNN进行目标检测"><a href="#二、用CNN进行目标检测" class="headerlink" title="二、用CNN进行目标检测"></a>二、用CNN进行目标检测</h1><p>　　目标检测的整体框架如Figure1所示，</p>
 <p>　　<img src="http://ww2.sinaimg.cn/large/9c9fe229jw1f9dtzsjj0fj20fz0dkq5t.jpg" alt=""></p>
-<p>　　主要步骤包括：</p>
+<p>　　<strong>主要步骤</strong>包括：</p>
 <p>（1）用selective search方法提取出2k个region proposal，并将每个region proposal映射（wrap）成227*227的大小；</p>
 <p>（2）用CNN从每一个region proposal提取固定长度的（4096维）特征向量；其中CNN网络采用AlexNet去掉最后的softmax层</p>
 <p>（3）利用CNN提取的特征向量训练K个SVM分类器；</p>
