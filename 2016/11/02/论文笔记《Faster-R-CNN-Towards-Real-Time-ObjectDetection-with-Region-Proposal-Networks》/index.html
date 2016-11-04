@@ -101,7 +101,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2016-11-02</span>
-            <span class="time">12:50:33</span>
+            <span class="time">12:53:40</span>
           </span>
           
           <!--  Categories  -->
@@ -144,7 +144,7 @@
 <p>　　其中，i为一个anchor在一个mini-batch中的下标，pi是anchor i为一个object的预测可能性。如果这个anchor是positive的，则ground-truth标签pi<em>为1，否则为0。ti表示预测bounding box的4个参数化坐标，ti</em>是这个positive anchor对应的ground-truth  box。分类损失Lcls是一个二值分类器（是目标或者不是）的softmax loss。回归损失<img src="http://img.blog.csdn.net/20160513162701740" alt="img">，其中R是Fast R-CNN中定义的robust loss function (smooth L1)。pi<em>Lreg表示回归损失只有在positive anchor（pi</em>=1)的时候才会被激活。cls与reg层的输出分别包含{pi}和{ti}。</p>
 <p>　　平衡参数λ来平衡Ncls和Nreg。cls term标准化为mini-batch的大小（Ncls=256），reg term标准化为anchor位置的数目（Nreg~2400），默认λ=10，使得cls term和reg term权重大致相等。</p>
 <p>　　对于bounding box的回归，应用了以下4个坐标的参数化：</p>
-<p>　　　　　　　　<img src="http://ww3.sinaimg.cn/large/9c9fe229jw1f9fu0o9smgj209003fwf0.jpg" alt=""></p>
+<p>　　　　　　　　　　　<img src="http://ww3.sinaimg.cn/large/9c9fe229jw1f9fu0o9smgj209003fwf0.jpg" alt=""></p>
 <p>　　x、y、w、h表示box中心的坐标以及它的宽度和高度。变量x、xa和x*分别针对于预测的box、anchor box 和ground-truth box（y、w、h也是一样的）。可以认为是从一个anchor box到一个附近的ground-truth box的回归。</p>
 <h3 id="训练-RPNs"><a href="#训练-RPNs" class="headerlink" title="训练 RPNs"></a>训练 RPNs</h3><p> 　　利用反向传播和随机梯度下降（SGD）来训练RPN。使用“image-centric”采样策略来训练这个网络。每个mini-batch来自于一张图片，包含许多positive anchor和negative anchor。如果对所有anchor的损失函数进行优化，会偏袒negative样本。因此，在一张图片中随机取样256个anchor来计算一个mini-batch的损失函数，取样的positive anchor和negative anchor的比例在1:1之上。若一张图像没有128个positive样本，则用negative样本来补充。</p>
 <p>　　使用标准偏差为0.01的零均值高斯分布来对新增的层进行随机初始化，其余使用ImageNet的模型来进行初始化。使用0.001的学习率来学习60k个mini-batches，以及0.0001的学习率来学习后面PASCAL VOC数据集的20k个mini-batch。momentum=0.9，weight-decay=0.0005，使用了Caffe框架。</p>
